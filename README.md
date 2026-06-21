@@ -5,7 +5,8 @@ I stand with a geomean of ~4.7ms, which is nearly 10x faster than the `torch.geq
 
 I had 0 idea about about Householder reflection, parallel prefix sum, and writing triton kernels before this, hence I banked my intuition from writing performant code for CPUs and some knowledge about GPUs to push as much as I could within a day.
 
-Final code (till now): [weareclose_warp.py](code/weareclose_warp.py)
+Final code (till now): [weareclose_warp.py](code/weareclose_warp.py)  
+Contest details: [GPU MODE - Linear Algebra Kernels For The Age Of Research](https://www.gpumode.com/news/linear-algebra-kernels-age-of-research) | [Tweet by @marksaroufim](https://x.com/marksaroufim/status/2065564033668022715)
 
 ![leaderboard](media/leaderboard.png)
 
