@@ -5,7 +5,7 @@ I stand with a geomean of ~4.7ms, which is nearly 10x faster than the `torch.geq
 
 I had 0 idea about about Householder reflection, parallel prefix sum, and writing triton kernels before this, hence I banked my intuition from writing performant code for CPUs and some knowledge about GPUs to push as much as I could within a day.
 
----
+![leaderboard](media/leaderboard.png)
 
 ## the math
 
@@ -342,6 +342,8 @@ Hi, this is me again. Came to summarise the weird rough stuff i had written:
 5. additional as i had previously flagged in my `qr()` function, there i used `baddbmm_` but it barely gave 0.7ms improvement so i did not log it. 
 
 RESULT: currently at 4791.093 microseconds. 
+
+![graph](media/perf_graph.png)
 
 ### todo 
 
