@@ -1,9 +1,11 @@
 # Writeup
 
 As of writing this (15:05 IST, Jun 21) I am ranked 32nd out of 106 in the GPU MODE leaderboard.
-I stand with a geomean of ~4.7ms, which is nearly 10x faster than the `torch.geqrf` baseline.
+I stand with a geomean of ~4.7ms, which is nearly 10x faster than the `torch.geqrf` baseline. I started yesterday at 9:57 am.
 
 I had 0 idea about about Householder reflection, parallel prefix sum, and writing triton kernels before this, hence I banked my intuition from writing performant code for CPUs and some knowledge about GPUs to push as much as I could within a day.
+
+Final code (till now): [weareclose_warp.py](code/weareclose_warp.py)
 
 ![leaderboard](media/leaderboard.png)
 
