@@ -135,13 +135,13 @@ def qr(A, block, num_warps=8):
 def custom_kernel(data: input_t) -> output_t:
     A = data
     n = A.shape[-1]
-    torch.backends.cuda.matmul.allow_tf32 = (n >= 256)
+    torch.backends.cuda.matmul.allow_tf32 = n >= 256
     if n > 2048:
         return torch.geqrf(A.contiguous())
     if n >= 1024:
         block, nw = 16, 8
     elif n >= 256:
-        block, nw = 32, (4 if n==512 else 8)
+        block, nw = 32, (4 if n == 512 else 8)
     else:
         block, nw = 32, 4
     return qr(A.contiguous(), block, nw)

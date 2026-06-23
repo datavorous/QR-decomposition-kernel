@@ -60,7 +60,6 @@ def _panel_kernel(
         V,
         mask=rm[:, None] & cm[None, :],
     )
-    # in-kernel compact-WY T
     Tt = tl.zeros((BNB, BNB), dtype=tl.float32)
     tau0 = tl.sum(tl.where(c == 0, tau_vec, 0.0))
     Tt = tl.where((c[:, None] == 0) & (c[None, :] == 0), tau0, Tt)
@@ -94,10 +93,10 @@ def qr(A, block, num_warps=8):
     for k in range(0, n, bs):
         ib = min(bs, n - k)
         BM = triton.next_power_of_2(m - k)
-        Hv = H[:, k:, k : k + ib]  # strided view, factored in place
+        Hv = H[:, k:, k : k + ib]
         Tt = A.new_zeros(B, BNB, BNB)
         ts = A.new_zeros(B, BNB)
-        Vb = A.new_zeros(B, m - k, ib)  # kernel writes unit-lower V here
+        Vb = A.new_zeros(B, m - k, ib)
         _panel_kernel[(B,)](
             Hv,
             ts,
@@ -128,7 +127,7 @@ def qr(A, block, num_warps=8):
             C = H[:, k:, hi:]
             W = V.transpose(-1, -2) @ C
             W = T.transpose(-1, -2) @ W
-            C.baddbmm_(V, W, beta=1, alpha=-1)  # your kept lever
+            C.baddbmm_(V, W, beta=1, alpha=-1)
     return H, tau
 
 
@@ -140,7 +139,7 @@ def custom_kernel(data: input_t) -> output_t:
     if n >= 1024:
         block, nw = 16, 8
     elif n >= 256:
-        block, nw = 32, (4 if n==512 else 8)
+        block, nw = 32, (4 if n == 512 else 8)
     else:
         block, nw = 32, 4
     return qr(A.contiguous(), block, nw)

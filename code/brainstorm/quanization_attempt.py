@@ -4,19 +4,23 @@ import triton.language as tl
 
 from task import input_t, output_t
 
-
 _E4M3_MAX = 448.0
+
 
 def _fp8_split(x, axis):
     s = x.abs().amax(dim=axis, keepdim=True).clamp(min=1e-30) / _E4M3_MAX
     return (x / s).to(torch.float8_e4m3fn).float() * s
 
+
 def _mm(a, b, mode):
     if mode == "fp8s2":
-        a1 = _fp8_split(a, -1); b1 = _fp8_split(b, -2)
-        a2 = _fp8_split(a - a1, -1); b2 = _fp8_split(b - b1, -2)
+        a1 = _fp8_split(a, -1)
+        b1 = _fp8_split(b, -2)
+        a2 = _fp8_split(a - a1, -1)
+        b2 = _fp8_split(b - b1, -2)
         return a1 @ b1 + a2 @ b1 + a1 @ b2
     return a @ b
+
 
 @triton.jit
 def _panel_kernel(
